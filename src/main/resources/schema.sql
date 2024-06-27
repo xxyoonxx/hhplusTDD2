@@ -11,6 +11,6 @@ CREATE TABLE lecture_detail (
 );
 CREATE TABLE lecture_registration (
                                       lecture_registration_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                                      lecture_id BIGINT NOT NULL,
+                                      lecture_detail_id BIGINT NOT NULL,
                                       user_id BIGINT NOT NULL
 );
