@@ -14,4 +14,3 @@ CREATE TABLE lecture_registration (
                                       lecture_detail_id BIGINT NOT NULL,
                                       user_id BIGINT NOT NULL
 );
-ALTER TABLE lecture_detail ADD COLUMN version INT;

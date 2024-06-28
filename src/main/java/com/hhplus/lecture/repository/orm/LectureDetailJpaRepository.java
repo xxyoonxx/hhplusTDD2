@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface LectureDetailJpaRepository extends JpaRepository<LectureDetailEntity, Long> {
+
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT ld FROM LectureDetailEntity ld WHERE ld.lectureDetailId = :lectureDetailId")
     LectureDetailEntity findLectureDetailIdWithPessimisticLock(@Param("lectureDetailId") long lectureDetailId);

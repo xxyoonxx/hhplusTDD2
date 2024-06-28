@@ -23,8 +23,6 @@ public class LectureDetailEntity {
     private int currentCnt;
     private int capacity;
     private LocalDateTime startDate;
-    @Version
-    private Integer version;
 
     public LectureDetailEntity(LectureDetail lectureDetail) {
         BeanUtils.copyProperties(lectureDetail, this);

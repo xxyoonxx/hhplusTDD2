@@ -33,7 +33,7 @@ public class LectureExceptionTest {
     @Test
     public void testApplyLecture_CapacityExceeded() {
         LectureRequestDto requestDto = new LectureRequestDto(4L, 2L);
-        LectureDetail lectureDetail = new LectureDetail(4L, 30, 30,1);
+        LectureDetail lectureDetail = new LectureDetail(4L, 30, 30);
 
         when(lectureDetailRepository.getLectureDetailDomain(requestDto.getLectureDetailId())).thenReturn(lectureDetail);
 
@@ -47,7 +47,7 @@ public class LectureExceptionTest {
     @Test
     public void testApplyLecture_AlreadyApplied() {
         LectureRequestDto requestDto = new LectureRequestDto(4L, 1L);
-        LectureDetail lectureDetail = new LectureDetail(4L, 29, 30,1);
+        LectureDetail lectureDetail = new LectureDetail(4L, 29, 30);
 
         when(lectureDetailRepository.getLectureDetailDomain(requestDto.getLectureDetailId())).thenReturn(lectureDetail);
         when(lectureRegistrationRepository.isApplied(requestDto.getLectureDetailId(), requestDto.getUserId())).thenReturn(true);
