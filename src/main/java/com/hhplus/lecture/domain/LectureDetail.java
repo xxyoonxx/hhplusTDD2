@@ -14,6 +14,5 @@ public class LectureDetail {
     private long lectureDetailId;
     private int currentCnt;
     private int capacity;
-    private Integer version;
 
 }

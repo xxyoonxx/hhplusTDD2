@@ -28,6 +28,8 @@ public class LectureServiceImpl implements LectureService {
     private final LectureDetailRepository lectureDetailRepository;
     private final LectureRegistrationRepository lectureRegistrationRepository;
 
+    private final ConcurrentHashMap<Long, Lock> lockMap = new ConcurrentHashMap<>();
+
     @Override
     @Transactional
     public LectureDetail applyLecture(LectureRequestDto dto) {
@@ -35,10 +37,16 @@ public class LectureServiceImpl implements LectureService {
         long userId = dto.getUserId();
 
         System.out.println("접근유저: " + userId);
+
+        Lock lock = lockMap.computeIfAbsent(lectureDetailId, id -> new ReentrantLock());
         try {
+            lock.lock();
             // 강의 상세 정보를 로드
             LectureRegistration lectureRegistration = new LectureRegistration(lectureDetailId, userId);
-            LectureDetail lectureDetail = lectureDetailRepository.getLectureDetailDomain(lectureDetailId); //
+            LectureDetail lectureDetail = lectureDetailRepository.findLectureDetailIdWithPessimisticLock(lectureDetailId);
+            if (lectureDetail == null) {
+                throw new LectureException(ErrorCode.NO_LECTURE);
+            }
 
             // 정원이 초과됐는지 확인
             if (lectureDetail.getCurrentCnt() >= 30) {
@@ -54,9 +62,10 @@ public class LectureServiceImpl implements LectureService {
             lectureRegistrationRepository.applyLecture(lectureRegistration);
 
             // 강의 상세 정보 업데이트
+            System.err.println("정원:"+(lectureDetail.getCurrentCnt()+1)+"/"+lectureDetail.getCapacity());
             return lectureDetailRepository.detailUpdate(lectureDetail);
-        } catch (OptimisticLockingFailureException e) {
-            throw new LectureException(ErrorCode.CAPACITY_EXCEEDED);
+        } finally {
+            lock.unlock();
         }
     }
 

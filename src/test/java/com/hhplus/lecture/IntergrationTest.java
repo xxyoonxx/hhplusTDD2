@@ -30,7 +30,7 @@ public class IntergrationTest {
     @Test
     public void testApplyLecture() throws Exception {
         LectureRequestDto requestDto = new LectureRequestDto(5L, 2L);
-        LectureDetail lectureDetail = new LectureDetail(5L, 2, 30,1);
+        LectureDetail lectureDetail = new LectureDetail(5L, 2, 30);
 
         when(lectureService.applyLecture(any(LectureRequestDto.class))).thenReturn(lectureDetail);
 
